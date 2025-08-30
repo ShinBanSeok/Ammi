@@ -1,7 +1,10 @@
 export const SITE_INFO = {
   companyName: '(주)암미',
   ceo: 'J. Doe',
-  address: 'Seoul, Republic of Korea, 12-34, Sample-ro',
+  address: {
+    main: '서울특별시 중구 다산로 38길 69, 우덕빌딩',
+    office: '서울특별시 종로구 종로 266, D동 3층 302호'
+  },
   phone: '02-1234-5678',
   bizRegNo: '215-81-36619',
   copyright: `Copyright © (주)암미. ALL RIGHTS RESERVED.`,
@@ -28,7 +31,7 @@ export const NAV = {
   },
   location: {
     label: 'LOCATION',
-    children: [{ label: 'LOCATION', href: '/location' }],
+    children: [{ label: 'LOCATION', href: '/location/location' }],
   },
   contact: {
     label: 'CONTACT',

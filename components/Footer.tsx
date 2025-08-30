@@ -12,7 +12,7 @@ export default function Footer() {
           <div className="border-r border-gray-400 h-3"></div>
           <div className="px-6">대표자: {ceo}</div>
           <div className="border-r border-gray-400 h-3"></div>
-          <div className="px-6">주소: {address}</div>
+          <div className="px-6">주소: {address.main}</div>
           <div className="border-r border-gray-400 h-3"></div>
           <div className="px-6">전화번호: {phone}</div>
           <div className="border-r border-gray-400 h-3"></div>
