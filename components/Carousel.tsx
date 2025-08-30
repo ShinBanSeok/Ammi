@@ -14,8 +14,8 @@ interface Props {
 
 export default function Carousel({
   slides,
-  autoMs = 6000,
-  fadeMs = 3000,
+  autoMs = 6000, // 자동을 슬라이드 넘어가는 시간, 1000당 1초
+  fadeMs = 3000, // 슬라이드 넘어갈 때 걸리는 시간, 1000당 1초
   showDots = true,
 }: Props) {
   const [idx, setIdx] = useState(0);

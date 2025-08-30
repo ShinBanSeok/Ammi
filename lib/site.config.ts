@@ -4,7 +4,7 @@ export const SITE_INFO = {
   address: 'Seoul, Republic of Korea, 12-34, Sample-ro',
   phone: '02-1234-5678',
   bizRegNo: '215-81-36619',
-  copyright: `COPYRIGHT© (주)암미 ALL RIGHTS RESERVED.`,
+  copyright: `Copyright © (주)암미. ALL RIGHTS RESERVED.`,
   logoAlt: 'AMMI Logo',
 };
 

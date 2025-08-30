@@ -4,7 +4,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: 'AMMI MERCHANDISING',
+  title: '(주)암미',
   description: 'Modern corporate website (Next.js + TypeScript)',
 };
 
