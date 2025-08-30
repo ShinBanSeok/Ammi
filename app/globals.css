@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 기본 폰트/여백 정리 */
+html,
+body {
+  height: 100%;
+  background: #ffffff;
+  color: #0e0e10;
+}
+
+/* 고정 헤더 높이만큼 본문 상단 패딩 */
+:root {
+  --header-h: 80px;
+}
+
+.main-padding {
+  padding-top: var(--header-h);
+}
+
+/* 부드러운 스크롤 느낌 */
+html {
+  scroll-behavior: smooth;
+}
