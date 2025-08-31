@@ -29,7 +29,7 @@ export default function Nav() {
 
               {/* 드롭다운 */}
               <div
-                className={`pointer-events-auto absolute mt-2 min-w-[220px] rounded-xl border border-black/10 bg-white p-2 shadow-lg transition-opacity duration-200 ${
+                className={`pointer-events-auto absolute mt-2 min-w-[180px] rounded-xl border border-black/10 bg-white p-2 shadow-lg transition-opacity duration-200 ${
                   open === k ? 'opacity-100' : 'pointer-events-none opacity-0'
                 }`}
               >
@@ -37,7 +37,7 @@ export default function Nav() {
                   {item.children.map((c) => (
                     <li key={c.href}>
                       <Link
-                        className="block rounded-lg px-4 py-2 text-[14px] capitalize hover:bg-gray-50"
+                        className="block rounded-lg px-4 py-1 text-[13px] capitalize hover:bg-gray-50"
                         href={c.href}
                       >
                         {c.label}
