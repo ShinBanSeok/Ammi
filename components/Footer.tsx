@@ -5,7 +5,7 @@ export default function Footer() {
   const { companyName, ceo, address, phone, bizRegNo, copyright } = SITE_INFO;
 
   return (
-    <footer className="bg-white">
+    <footer className="bg-white border-t border-black/10">
       <Container>
         <div className="flex flex-wrap items-center py-8 text-[14px] leading-6 text-gray-600">
           <div className="pr-6">회사명: {companyName}</div>

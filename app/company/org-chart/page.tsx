@@ -13,7 +13,7 @@ function GridConnector({
   meetY = 24, // 부서 세로선이 내려오는 y (px)
   down = 24, // 가로선에서 팀 쪽으로 내려가는 길이 (px)
   stroke = '#9CA3AF',
-  strokeWidth = 2,
+  strokeWidth = 2, // 선 굵기
 }: {
   count: number;
   meetY?: number;
@@ -84,7 +84,7 @@ export default function OrgChartPage() {
                   <div className="text-sm opacity-80">Finance Department</div>
                 </div>
                 <div className="w-[480px] shrink-0">
-                  <GridConnector count={2} meetY={meetY2} down={meetY2} />
+                  <GridConnector count={2} meetY={meetY2} down={meetY2 + 10} />
                 </div>
                 {/* 팀 그리드: gap-0, 각 카드 래퍼에 mx로 간격 부여 */}
                 <div className="grid grid-cols-2 gap-0 w-[480px] shrink-0 justify-items-center">
@@ -109,7 +109,11 @@ export default function OrgChartPage() {
                     <div className="text-sm opacity-80">Sales Department</div>
                   </div>
                   <div className="w-[560px] shrink-0">
-                    <GridConnector count={3} meetY={meetY3} down={meetY3} />
+                    <GridConnector
+                      count={3}
+                      meetY={meetY3}
+                      down={meetY3 + 10}
+                    />
                   </div>
                   <div className="grid grid-cols-3 gap-0 w-[560px] shrink-0 justify-items-center">
                     <div className="relative mx-5">
@@ -142,7 +146,11 @@ export default function OrgChartPage() {
                     </div>
                   </div>
                   <div className="w-[560px] shrink-0">
-                    <GridConnector count={3} meetY={meetY3} down={meetY3} />
+                    <GridConnector
+                      count={3}
+                      meetY={meetY3}
+                      down={meetY3 + 10}
+                    />
                   </div>
                   <div className="grid grid-cols-3 gap-0 w-[560px] shrink-0 justify-items-center">
                     <div className="relative mx-5">
@@ -174,7 +182,7 @@ export default function OrgChartPage() {
                   <div className="text-sm opacity-80">Material Department</div>
                 </div>
                 <div className="w-[480px] shrink-0">
-                  <GridConnector count={2} meetY={meetY2} down={meetY2} />
+                  <GridConnector count={2} meetY={meetY2} down={meetY2 + 10} />
                 </div>
                 <div className="grid grid-cols-2 gap-0 w-[480px] shrink-0 justify-items-center">
                   <div className="relative mx-5">
