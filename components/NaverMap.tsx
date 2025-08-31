@@ -21,7 +21,7 @@ export default function NaverMap({
   const mapInstance = useRef<any>(null);
 
   const companyAddress = '서울특별시 중구 다산로 38길 69, 우덕빌딩';
-  const companyCoords = { lat: 37.562095011763546, lng: 127.01922947817674 }; // 정확한 좌표
+  const companyCoords = { lat: 37.56211, lng: 127.01938 }; // 정확한 좌표
 
   useEffect(() => {
     const initializeMap = () => {
@@ -57,9 +57,37 @@ export default function NaverMap({
         map: mapInstance.current,
         title: '(주)암미',
         icon: {
-          content:
-            '<div style="background: #ff4444; width: 25px; height: 25px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.3);"></div>',
-          anchor: new window.naver.maps.Point(10, 10),
+          content: `
+            <div style="
+              width: 30px; 
+              height: 40px; 
+              position: relative;
+            ">
+              <div style="
+                width: 26px; 
+                height: 26px; 
+                background: #fd5454ff; 
+                border: 2px solid white;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+                border-radius: 50% 50% 50% 0; 
+                transform: rotate(-45deg);
+                position: absolute;
+                top: 2px;
+                left: 2px;
+              "></div>
+              <div style="
+                width: 8px; 
+                height: 8px; 
+                background: white; 
+                border-radius: 50%; 
+                position: absolute;
+                top: 11px;
+                left: 11px;
+                z-index: 2;
+              "></div>
+            </div>
+          `,
+          anchor: new window.naver.maps.Point(17, 29),
         },
       });
 
