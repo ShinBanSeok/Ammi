@@ -49,8 +49,8 @@ export default function LocationPage() {
                 <h2 className="text-lg font-semibold mb-3">오시는 길</h2>
                 <div className="space-y-2 text-gray-700 text-sm">
                   <div>
-                    <span className="text-xl">🚆</span> 신당역 4번 출구, 도보
-                    6분 / 청구역 2번 출구 도보 8분
+                    <span className="text-xl">🚆</span> 신당역 4번 출구 (도보
+                    6분) / 청구역 2번 출구 (도보 8분)
                   </div>
                   <div>
                     <span className="text-xl">🚌</span> 142 / 147 / 2233 / 6211

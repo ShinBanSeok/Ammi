@@ -7,8 +7,7 @@ export default function BembergPage() {
       <div className="flex gap-8 py-20">
         <SubPageSidebar />
         <main className="flex-1">
-          <h1 className="mb-6 text-3xl font-semibold uppercase tracking-wide">Quality · Bemberg</h1>
-          <p className="text-gray-600">Coming soon.</p>
+          <p className="text-gray-600">Coming Soon.</p>
         </main>
       </div>
     </Container>

@@ -6,6 +6,8 @@ export const SITE_INFO = {
     office: '서울특별시 종로구 종로 266, D동 3층 302호',
   },
   phone: '02-2238-8046',
+  email: 'iop616@naver.com',
+  instagram: 'https://instagram.com/ammi',
   bizRegNo: '215-81-36619',
   copyright: `Copyright © (주)암미. ALL RIGHTS RESERVED.`,
   logoAlt: 'AMMI Logo',
