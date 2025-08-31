@@ -1,6 +1,7 @@
 import Container from '@/components/Container';
 import SubPageSidebar from '@/components/SubPageSidebar';
 import NaverMap from '@/components/NaverMap';
+import Image from 'next/image';
 import { SITE_INFO } from '@/lib/site.config';
 
 export default function LocationPage() {
@@ -11,7 +12,7 @@ export default function LocationPage() {
       <div className="flex gap-8 py-20">
         <SubPageSidebar />
         <main className="flex-1">
-          <div className="space-y-8">
+          <div className="space-y-16">
             {/* 지도 영역 - 좌우로 넓게 */}
             <div>
               <div className="aspect-video">
@@ -23,8 +24,8 @@ export default function LocationPage() {
             </div>
 
             {/* 정보 영역 - 지도 아래 */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="md:col-span-1 space-y-10">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
+              <div className="md:col-span-2 space-y-10">
                 <div>
                   <h2 className="text-lg font-semibold mb-3">본사</h2>
                   <div className="space-y-2 text-gray-700 text-sm">
@@ -44,20 +45,20 @@ export default function LocationPage() {
                 </div>
               </div>
 
-              <div className="md:col-span-2">
+              <div className="md:col-span-3">
                 <h2 className="text-lg font-semibold mb-3">오시는 길</h2>
                 <div className="space-y-2 text-gray-700 text-sm">
                   <div>
-                    <span className="font-medium">지하철:</span> 신당역 4번
-                    출구, 도보 6분 / 청구역 2번 출구 도보 8분
+                    <span className="text-xl">🚆</span> 신당역 4번 출구, 도보
+                    6분 / 청구역 2번 출구 도보 8분
                   </div>
                   <div>
-                    <span className="font-medium">버스:</span> 142, 147, 2233,
-                    6211, 2012, 2013, 2014, 2015, 202, 421, 463, 2233, 7212
+                    <span className="text-xl">🚌</span> 142 / 147 / 2233 / 6211
+                    / 2012 / 2013 / 2014 / 2015 / 202 / 421 / 463 / 2233 / 7212
                   </div>
                   <div>
-                    <span className="font-medium">주차:</span> 건물 기계주차장
-                    이용 가능
+                    <span className="text-xl">🚘</span> 건물 기계주차장 이용
+                    가능
                   </div>
                 </div>
               </div>

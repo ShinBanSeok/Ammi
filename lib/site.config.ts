@@ -1,11 +1,11 @@
 export const SITE_INFO = {
   companyName: '(주)암미',
-  ceo: 'J. Doe',
+  ceo: '신승식',
   address: {
     main: '서울특별시 중구 다산로 38길 69, 우덕빌딩',
-    office: '서울특별시 종로구 종로 266, D동 3층 302호'
+    office: '서울특별시 종로구 종로 266, D동 3층 302호',
   },
-  phone: '02-1234-5678',
+  phone: '02-2238-8046',
   bizRegNo: '215-81-36619',
   copyright: `Copyright © (주)암미. ALL RIGHTS RESERVED.`,
   logoAlt: 'AMMI Logo',
@@ -17,7 +17,7 @@ export const NAV = {
     children: [
       { label: 'OVERVIEW', href: '/company/overview' },
       { label: 'HISTORY', href: '/company/history' },
-      { label: 'ORGANIZATIONAL', href: '/company/organizational' },
+      { label: 'ORG-CHART', href: '/company/org-chart' },
       { label: 'CULTURE', href: '/company/culture' },
     ],
   },

@@ -16,13 +16,13 @@ export default function SubPageSidebar() {
   if (!navData) return null;
 
   return (
-    <div className="w-48 flex-shrink-0">
+    <div className="w-36 flex-shrink-0 mr-10">
       <div className="sticky top-24">
-        <h3 className="text-lg font-bold text-gray-900 mb-2">
+        <h3 className="text-lg font-bold text-gray-900 mb-3">
           {navData.label}
         </h3>
-        <hr className="border-gray-300 mb-4" />
-        <nav className="space-y-2">
+        <hr className="border-gray-300 mb-3" />
+        <nav className="space-y-3">
           {navData.children.map((item) => {
             const isActive = pathname === item.href;
             

@@ -10,7 +10,7 @@ export default function Header() {
       <div className="mx-auto text-4xl flex h-full max-w-[1400px] items-center justify-between px-6">
         <Link
           href="/"
-          className="flex items-center font-medium gap-3"
+          className="flex items-center font-medium gap-3 px-24"
           aria-label="Go to home"
         >
           Ammi
