@@ -20,7 +20,7 @@ export default function Footer() {
             <div className="border-r border-gray-400 h-3"></div>
             <span className="px-3">사업자등록번호: {bizRegNo}</span>
           </div>
-          <div className="mt-4 text-gray-500 text-xs">{copyright}</div>
+          <div className="mt-5 text-gray-500 text-xs">{copyright}</div>
         </div>
 
         {/* 데스크톱 기존 레이아웃 */}
