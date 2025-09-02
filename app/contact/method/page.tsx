@@ -106,7 +106,7 @@ export default function MethodPage() {
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 text-brand-600 hover:text-brand-700 font-medium transition-colors"
                     >
-                      @ammi
+                      @ammi_ltd
                     </a>
                   </div>
                 </div>
