@@ -9,9 +9,10 @@ export default function LocationPage() {
 
   return (
     <Container>
-      <div className="flex gap-8 py-20">
+      <div className="flex gap-8 py-4 md:py-20">
         <SubPageSidebar />
         <main className="flex-1">
+          <h1 className="block md:hidden text-2xl sm:text-3xl font-extrabold text-center mb-10 uppercase tracking-wider">LOCATION</h1>
           <div className="space-y-16">
             {/* 지도 영역 - 좌우로 넓게 */}
             <div>

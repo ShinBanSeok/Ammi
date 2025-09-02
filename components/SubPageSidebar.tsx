@@ -16,7 +16,7 @@ export default function SubPageSidebar() {
   if (!navData) return null;
 
   return (
-    <div className="w-36 flex-shrink-0 mr-10">
+    <div className="w-36 flex-shrink-0 mr-10 hidden md:block">
       <div className="sticky top-24">
         <h3 className="text-lg font-bold text-gray-900 mb-3">
           {navData.label}
