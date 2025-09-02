@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: '(주)암미',
   description: 'Modern corporate website (Next.js + TypeScript)',
   other: {
-    'naver-site-verification': '19c31a55dd6e7636a32bc812f5bd53d2f',
+    'naver-site-verification': '19c31a52bd5ed7bd663a632be213f2b5d5d3da2f',
   },
 };
 
