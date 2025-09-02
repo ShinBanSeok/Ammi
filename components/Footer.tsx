@@ -9,16 +9,18 @@ export default function Footer() {
       <Container>
         {/* 모바일 전용 3줄 레이아웃 */}
         <div className="block md:hidden py-4 text-xs leading-5 text-gray-600 space-y-2">
-          <div className="flex">
+          <div className="flex items-center">
             <span className="pr-3">회사명: {companyName}</span>
+            <div className="border-r border-gray-400 h-3"></div>
             <span className="px-3">대표자: {ceo}</span>
           </div>
-          <div className="px-3">주소: {address.main}</div>
-          <div className="flex">
+          <div>주소: {address.main}</div>
+          <div className="flex items-center">
             <span className="pr-3">전화번호: {phone}</span>
+            <div className="border-r border-gray-400 h-3"></div>
             <span className="px-3">사업자등록번호: {bizRegNo}</span>
           </div>
-          <div className="mt-4 text-gray-500 text-xs px-3">{copyright}</div>
+          <div className="mt-4 text-gray-500 text-xs">{copyright}</div>
         </div>
 
         {/* 데스크톱 기존 레이아웃 */}
