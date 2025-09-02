@@ -64,9 +64,9 @@ export default function Carousel({
 
       {/* 중앙 오버레이 타이포(옵션) */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-        <h1 className="select-none text-center text-5xl font-extrabold tracking-tight text-white/90 drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] md:text-7xl">
+        <h1 className="select-none text-center text-3xl font-extrabold tracking-tight text-white/90 drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
           Ammi
-          <span className="block text-2xl font-semibold md:text-3xl">
+          <span className="block text-lg font-semibold sm:text-xl md:text-2xl lg:text-3xl">
             Comfortable lining
           </span>
         </h1>

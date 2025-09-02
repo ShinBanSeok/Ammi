@@ -47,7 +47,7 @@ export default function EntryPage() {
           onClick={handleEnter}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
-          className="relative group border-2 border-white px-8 py-4 bg-transparent text-white font-bold text-2xl tracking-wider overflow-hidden transition-all duration-300 hover:scale-105"
+          className="relative group border-2 border-white px-4 py-2 md:px-6 md:py-3 bg-transparent text-white font-medium text-lg md:text-xl lg:text-2xl tracking-wider overflow-hidden transition-all duration-300 hover:scale-105"
         >
           {/* Animated Fill Effect */}
           <div

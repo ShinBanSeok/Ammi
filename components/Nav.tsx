@@ -13,7 +13,7 @@ export default function Nav() {
 
   return (
     <nav className="relative">
-      <ul className="flex items-center gap-10 text-lg uppercase tracking-wider">
+      <ul className="flex items-center gap-4 md:gap-6 lg:gap-10 text-sm md:text-base lg:text-lg uppercase tracking-wider">
         {menus.map((k) => {
           const item = NAV[k];
           return (
@@ -37,7 +37,7 @@ export default function Nav() {
                   {item.children.map((c) => (
                     <li key={c.href}>
                       <Link
-                        className="block rounded-lg px-4 py-1 text-[13px] capitalize hover:bg-gray-50"
+                        className="block rounded-lg px-4 py-1 text-xs md:text-sm capitalize hover:bg-gray-50"
                         href={c.href}
                       >
                         {c.label}
