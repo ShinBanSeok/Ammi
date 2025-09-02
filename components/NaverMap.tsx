@@ -111,7 +111,7 @@ export default function NaverMap({
     // 네이버 지도 API 스크립트 로드
     if (!window.naver) {
       const script = document.createElement('script');
-      script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID}`;
+      script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=z33mb4b9u0`;
       script.onload = initializeMap;
       document.head.appendChild(script);
     } else {
