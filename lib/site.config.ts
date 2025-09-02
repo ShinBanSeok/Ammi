@@ -7,7 +7,7 @@ export const SITE_INFO = {
   },
   phone: '02-2238-8046',
   email: 'iop616@naver.com',
-  instagram: 'https://instagram.com/ammi',
+  instagram: 'https://instagram.com/ammi_ltd',
   bizRegNo: '215-81-36619',
   copyright: `Copyright © (주)암미. ALL RIGHTS RESERVED.`,
   logoAlt: 'AMMI Logo',
