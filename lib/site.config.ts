@@ -46,15 +46,15 @@ export const NAV = {
 
 export const HERO_SLIDES = [
   {
-    src: '/images/slide-3.jpg',
+    src: '/images/main1.png',
     alt: 'Hero slide 1',
   },
   {
-    src: '/images/slide-1.jpg',
+    src: '/images/main2.png',
     alt: 'Hero slide 2',
   },
   {
-    src: '/images/slide-2.jpg',
+    src: '/images/slide-3.jpg',
     alt: 'Hero slide 3',
   },
 ];

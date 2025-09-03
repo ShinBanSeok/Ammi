@@ -4,15 +4,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
-const BACKGROUND_IMAGES = [
-  '/images/slide-1.jpg',
-  '/images/slide-2.jpg',
-  '/images/slide-3.jpg',
-  '/images/slide1.jpg',
-  '/images/slide2.jpg',
-  '/images/slide3.jpg',
-];
-
 export default function EntryPage() {
   const router = useRouter();
   const [isHovered, setIsHovered] = useState(false);
@@ -23,19 +14,15 @@ export default function EntryPage() {
 
   return (
     <div className="fixed inset-0 w-full h-screen overflow-hidden z-50">
-      {/* Background Images Grid */}
-      <div className="absolute inset-0 grid grid-cols-3 grid-rows-2 gap-1">
-        {BACKGROUND_IMAGES.map((src, index) => (
-          <div key={index} className="relative overflow-hidden">
-            <Image
-              src={src}
-              alt={`Background ${index + 1}`}
-              fill
-              className="object-cover"
-              priority={index < 3}
-            />
-          </div>
-        ))}
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <Image
+          src="/images/entry.png"
+          alt="Entry Background"
+          fill
+          className="object-cover"
+          priority
+        />
       </div>
 
       {/* Dark Overlay */}
