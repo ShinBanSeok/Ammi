@@ -13,14 +13,14 @@ export default function Header() {
           className="flex items-center font-medium gap-3 px-4 md:px-12 lg:px-24"
           aria-label="Go to home"
         >
-          Ammi
-          {/* <Image
-            src="/images/logo.svg"
+          <Image
+            src="/images/ammi_logo.png"
             alt="AMMI Logo"
-            width={120}
-            height={28}
+            width={40}
+            height={40}
             priority
-          /> */}
+          />
+          Ammi
         </Link>
         <Nav />
       </div>
