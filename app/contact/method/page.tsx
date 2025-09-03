@@ -9,7 +9,9 @@ export default function MethodPage() {
       <div className="flex gap-8 py-4 md:py-20">
         <SubPageSidebar />
         <main className="flex-1">
-          <h1 className="block md:hidden text-2xl sm:text-3xl font-extrabold text-center mb-10 uppercase tracking-wider">METHOD</h1>
+          <h1 className="block md:hidden text-2xl sm:text-3xl font-extrabold text-center mb-10 uppercase tracking-wider">
+            METHOD
+          </h1>
           <div className="max-w-3xl">
             <div className="space-y-16">
               {/* 이메일 */}
@@ -87,7 +89,7 @@ export default function MethodPage() {
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-brand-100 rounded-full flex items-center justify-center">
                     <Image
-                      src="/images/icons/인스타96.png"
+                      src="/images/icons/insta_free.png"
                       alt="Instagram"
                       width={24}
                       height={24}
