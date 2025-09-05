@@ -22,7 +22,6 @@ function VideoCard({ src, title, description }: VideoCardProps) {
   const handlePlayPause = (videoElement: HTMLVideoElement) => {
     if (videoElement.paused) {
       videoElement.play().catch((error) => {
-        console.log('Video play failed:', error);
         // 재생 실패 시 음소거 후 재시도
         videoElement.muted = true;
         videoElement.play();
