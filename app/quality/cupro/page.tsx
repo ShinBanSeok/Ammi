@@ -49,9 +49,9 @@ function VideoCard({ src, title, description }: VideoCardProps) {
     const currentPos = { x: e.clientX, y: e.clientY };
     const distance = Math.sqrt(
       Math.pow(currentPos.x - lastMousePos.current.x, 2) +
-      Math.pow(currentPos.y - lastMousePos.current.y, 2)
+        Math.pow(currentPos.y - lastMousePos.current.y, 2)
     );
-    
+
     if (distance > 5) {
       setShowControls(true);
       if (hideTimeoutRef.current) {
@@ -61,7 +61,7 @@ function VideoCard({ src, title, description }: VideoCardProps) {
         setShowControls(false);
       }, 1000);
     }
-    
+
     lastMousePos.current = currentPos;
   };
 
@@ -82,7 +82,6 @@ function VideoCard({ src, title, description }: VideoCardProps) {
     }
     setShowControls(false);
   };
-
 
   const handleTimeUpdate = () => {
     const video = videoRef.current;
@@ -144,7 +143,7 @@ function VideoCard({ src, title, description }: VideoCardProps) {
           if (video) {
             // 모바일에서는 단순히 재생/정지만
             handlePlayPause(video);
-            
+
             // 데스크탑에서만 컨트롤 표시 로직 실행
             const isMobile = window.innerWidth < 768;
             if (!isMobile) {
@@ -189,9 +188,11 @@ function VideoCard({ src, title, description }: VideoCardProps) {
 
         {/* Mobile Only - Tap to Play Hint */}
         <div className="md:hidden absolute inset-0 flex items-end justify-center pb-4 pointer-events-none">
-          <div className={`bg-black/60 backdrop-blur-sm px-3 py-1 rounded-full text-white text-xs transition-opacity duration-500 ${
-            !isPlaying ? 'opacity-70' : 'opacity-0'
-          }`}>
+          <div
+            className={`bg-black/60 backdrop-blur-sm px-3 py-1 rounded-full text-white text-xs transition-opacity duration-500 ${
+              !isPlaying ? 'opacity-70' : 'opacity-0'
+            }`}
+          >
             탭하여 재생
           </div>
         </div>
@@ -209,13 +210,21 @@ function VideoCard({ src, title, description }: VideoCardProps) {
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="w-16 h-16 bg-black/40 rounded-full flex items-center justify-center hover:bg-black/60 transition-all duration-200">
               {isPlaying ? (
-                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                  <rect x="6" y="4" width="4" height="16" rx="1"/>
-                  <rect x="14" y="4" width="4" height="16" rx="1"/>
+                <svg
+                  className="w-6 h-6 text-white"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <rect x="6" y="4" width="4" height="16" rx="1" />
+                  <rect x="14" y="4" width="4" height="16" rx="1" />
                 </svg>
               ) : (
-                <svg className="w-6 h-6 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="m7 4 13 8-13 8V4z"/>
+                <svg
+                  className="w-6 h-6 text-white ml-0.5"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="m7 4 13 8-13 8V4z" />
                 </svg>
               )}
             </div>
