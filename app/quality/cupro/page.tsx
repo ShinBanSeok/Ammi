@@ -142,7 +142,7 @@ function VideoCard({ src, title, description }: VideoCardProps) {
         <video
           ref={videoRef}
           className="w-full"
-          preload="metadata"
+          preload="auto"
           playsInline
           poster=""
           style={
