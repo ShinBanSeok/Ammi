@@ -21,7 +21,7 @@ function VideoCard({ src, title, description }: VideoCardProps) {
 
   const handlePlayPause = (videoElement: HTMLVideoElement) => {
     if (videoElement.paused) {
-      videoElement.play().catch((error) => {
+      videoElement.play().catch(() => {
         // 재생 실패 시 음소거 후 재시도
         videoElement.muted = true;
         videoElement.play();
@@ -186,7 +186,7 @@ function VideoCard({ src, title, description }: VideoCardProps) {
         </video>
 
         {/* Mobile Only - Tap to Play Hint */}
-        <div className="md:hidden absolute inset-0 flex items-end justify-center pb-4 pointer-events-none">
+        <div className="md:hidden absolute inset-0 flex items-end justify-center  pointer-events-none">
           <div
             className={`bg-black/60 backdrop-blur-sm px-3 py-1 rounded-full text-white text-xs transition-opacity duration-500 ${
               !isPlaying ? 'opacity-70' : 'opacity-0'
@@ -207,7 +207,14 @@ function VideoCard({ src, title, description }: VideoCardProps) {
         >
           {/* Play/Pause Button */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-16 h-16 bg-black/40 rounded-full flex items-center justify-center hover:bg-black/60 transition-all duration-200">
+            <div
+              className="w-16 h-16 bg-black/40 rounded-full flex items-center justify-center hover:bg-black/60 transition-all duration-200 cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                const video = videoRef.current;
+                if (video) handlePlayPause(video);
+              }}
+            >
               {isPlaying ? (
                 <svg
                   className="w-6 h-6 text-white"
