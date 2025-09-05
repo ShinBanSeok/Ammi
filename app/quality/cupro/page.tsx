@@ -18,29 +18,18 @@ function VideoCard({ src, title, description }: VideoCardProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const hideTimeoutRef = useRef<NodeJS.Timeout>();
   const lastMousePos = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const clickTimeoutRef = useRef<NodeJS.Timeout>();
 
   const handlePlayPause = (videoElement: HTMLVideoElement) => {
     if (videoElement.paused) {
       videoElement.play().catch(() => {
-        // 재생 실패 시 음소거 후 재시도
         videoElement.muted = true;
         videoElement.play();
       });
       setIsPlaying(true);
-      // 재생 시작하면 2초 후 컨트롤 숨기기
-      if (hideTimeoutRef.current) {
-        clearTimeout(hideTimeoutRef.current);
-      }
-      hideTimeoutRef.current = setTimeout(() => {
-        setShowControls(false);
-      }, 1000);
     } else {
       videoElement.pause();
       setIsPlaying(false);
-      if (hideTimeoutRef.current) {
-        clearTimeout(hideTimeoutRef.current);
-      }
-      setShowControls(true);
     }
   };
 
@@ -136,23 +125,24 @@ function VideoCard({ src, title, description }: VideoCardProps) {
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         onClick={(e) => {
-          const video = e.currentTarget.querySelector(
-            'video'
-          ) as HTMLVideoElement;
-          if (video) {
-            // 모바일에서는 단순히 재생/정지만
-            handlePlayPause(video);
-
-            // 데스크탑에서만 컨트롤 표시 로직 실행
-            const isMobile = window.innerWidth < 768;
-            if (!isMobile) {
-              setShowControls(true);
-              if (hideTimeoutRef.current) {
-                clearTimeout(hideTimeoutRef.current);
-              }
-              hideTimeoutRef.current = setTimeout(() => {
-                setShowControls(false);
-              }, 1000);
+          e.preventDefault();
+          e.stopPropagation();
+          
+          // 디바운스: 200ms 내 중복 클릭 방지
+          if (clickTimeoutRef.current) return;
+          
+          // 모바일에서만 동작
+          const isMobile = window.innerWidth < 768;
+          if (isMobile) {
+            const video = e.currentTarget.querySelector(
+              'video'
+            ) as HTMLVideoElement;
+            if (video) {
+              handlePlayPause(video);
+              
+              clickTimeoutRef.current = setTimeout(() => {
+                clickTimeoutRef.current = undefined;
+              }, 200);
             }
           }
         }}
@@ -204,17 +194,25 @@ function VideoCard({ src, title, description }: VideoCardProps) {
           style={{
             pointerEvents: showControls || !isPlaying ? 'auto' : 'none',
           }}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            if (clickTimeoutRef.current) return;
+            
+            const video = videoRef.current;
+            if (video) {
+              handlePlayPause(video);
+              
+              clickTimeoutRef.current = setTimeout(() => {
+                clickTimeoutRef.current = undefined;
+              }, 200);
+            }
+          }}
         >
           {/* Play/Pause Button */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div
-              className="w-16 h-16 bg-black/40 rounded-full flex items-center justify-center hover:bg-black/60 transition-all duration-200 cursor-pointer"
-              onClick={(e) => {
-                e.stopPropagation();
-                const video = videoRef.current;
-                if (video) handlePlayPause(video);
-              }}
-            >
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="w-16 h-16 bg-black/40 rounded-full flex items-center justify-center hover:bg-black/60 transition-all duration-200 pointer-events-none">
               {isPlaying ? (
                 <svg
                   className="w-6 h-6 text-white"
