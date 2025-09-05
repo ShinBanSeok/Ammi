@@ -136,18 +136,7 @@ function VideoCard({ src, title, description }: VideoCardProps) {
           const video = e.currentTarget.querySelector(
             'video'
           ) as HTMLVideoElement;
-          
-          if (video) {
-            // 모바일에서는 항상 재생바 표시하고 재생/정지 토글
-            handlePlayPause(video);
-            setShowControls(true);
-            if (hideTimeoutRef.current) {
-              clearTimeout(hideTimeoutRef.current);
-            }
-            hideTimeoutRef.current = setTimeout(() => {
-              setShowControls(false);
-            }, 1000);
-          }
+          if (video) handlePlayPause(video);
         }}
       >
         <video
