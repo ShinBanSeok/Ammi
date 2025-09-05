@@ -144,6 +144,7 @@ function VideoCard({ src, title, description }: VideoCardProps) {
           className="w-full"
           preload="metadata"
           playsInline
+          poster=""
           style={
             {
               backfaceVisibility: 'hidden',
@@ -154,6 +155,13 @@ function VideoCard({ src, title, description }: VideoCardProps) {
           onPlay={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
           onTimeUpdate={handleTimeUpdate}
+          onLoadedData={() => {
+            // 비디오 로드 완료 시 첫 프레임 표시
+            const video = videoRef.current;
+            if (video) {
+              video.currentTime = 0.1;
+            }
+          }}
         >
           <source src={src} type="video/mp4" />
           Your browser does not support the video tag.
