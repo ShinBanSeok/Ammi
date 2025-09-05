@@ -11,18 +11,78 @@ interface VideoCardProps {
 }
 
 function VideoCard({ src, title, description }: VideoCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isVisible, setIsVisible] = useState(1);
+  const [showControls, setShowControls] = useState(false);
+  const [progress, setProgress] = useState(0);
   const cardRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const hideTimeoutRef = useRef<NodeJS.Timeout>();
+  const lastMousePos = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
   const handlePlayPause = (videoElement: HTMLVideoElement) => {
     if (videoElement.paused) {
       videoElement.play();
       setIsPlaying(true);
+      // 재생 시작하면 2초 후 컨트롤 숨기기
+      if (hideTimeoutRef.current) {
+        clearTimeout(hideTimeoutRef.current);
+      }
+      hideTimeoutRef.current = setTimeout(() => {
+        setShowControls(false);
+      }, 1000);
     } else {
       videoElement.pause();
       setIsPlaying(false);
+      if (hideTimeoutRef.current) {
+        clearTimeout(hideTimeoutRef.current);
+      }
+      setShowControls(true);
+    }
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const currentPos = { x: e.clientX, y: e.clientY };
+    const distance = Math.sqrt(
+      Math.pow(currentPos.x - lastMousePos.current.x, 2) +
+      Math.pow(currentPos.y - lastMousePos.current.y, 2)
+    );
+    
+    if (distance > 5) {
+      setShowControls(true);
+      if (hideTimeoutRef.current) {
+        clearTimeout(hideTimeoutRef.current);
+      }
+      hideTimeoutRef.current = setTimeout(() => {
+        setShowControls(false);
+      }, 1000);
+    }
+    
+    lastMousePos.current = currentPos;
+  };
+
+  const handleMouseEnter = (e: React.MouseEvent) => {
+    lastMousePos.current = { x: e.clientX, y: e.clientY };
+    setShowControls(true);
+    if (hideTimeoutRef.current) {
+      clearTimeout(hideTimeoutRef.current);
+    }
+    hideTimeoutRef.current = setTimeout(() => {
+      setShowControls(false);
+    }, 1000);
+  };
+
+  const handleMouseLeave = () => {
+    if (hideTimeoutRef.current) {
+      clearTimeout(hideTimeoutRef.current);
+    }
+    setShowControls(false);
+  };
+
+
+  const handleTimeUpdate = () => {
+    const video = videoRef.current;
+    if (video) {
+      setProgress((video.currentTime / video.duration) * 100);
     }
   };
 
@@ -48,7 +108,6 @@ function VideoCard({ src, title, description }: VideoCardProps) {
       const opacity = Math.max(0.4, 1 - normalizedDistance * 0.6);
       const scale = Math.max(0.85, 1 - normalizedDistance * 0.15);
 
-      setIsVisible(opacity);
       card.style.transform = `scale(${scale})`;
       card.style.opacity = `${opacity}`;
     };
@@ -70,16 +129,29 @@ function VideoCard({ src, title, description }: VideoCardProps) {
     >
       <div
         className="relative w-full md:max-w-sm rounded-lg overflow-hidden shadow-lg mb-4 cursor-pointer transition-all duration-500 hover:shadow-xl"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        onMouseEnter={handleMouseEnter}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
         onClick={(e) => {
           const video = e.currentTarget.querySelector(
             'video'
           ) as HTMLVideoElement;
-          if (video) handlePlayPause(video);
+          
+          if (showControls && video) {
+            handlePlayPause(video);
+          } else {
+            setShowControls(true);
+            if (hideTimeoutRef.current) {
+              clearTimeout(hideTimeoutRef.current);
+            }
+            hideTimeoutRef.current = setTimeout(() => {
+              setShowControls(false);
+            }, 1000);
+          }
         }}
       >
         <video
+          ref={videoRef}
           className="w-full"
           preload="metadata"
           playsInline
@@ -92,14 +164,23 @@ function VideoCard({ src, title, description }: VideoCardProps) {
           }
           onPlay={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
+          onTimeUpdate={handleTimeUpdate}
         >
           <source src={src} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
 
-        {/* Custom Play Button Overlay */}
-        {(isHovered || !isPlaying) && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 transition-opacity duration-300">
+        {/* Custom Play Button Overlay - Always Present */}
+        <div
+          className={`absolute inset-0 bg-black bg-opacity-20 transition-opacity duration-300 ${
+            showControls || !isPlaying ? 'opacity-100' : 'opacity-0'
+          }`}
+          style={{
+            pointerEvents: showControls || !isPlaying ? 'auto' : 'none',
+          }}
+        >
+          {/* Play/Pause Button */}
+          <div className="absolute inset-0 flex items-center justify-center">
             <div className="w-16 h-16 bg-white bg-opacity-90 rounded-full flex items-center justify-center hover:bg-opacity-100 transition-all duration-200">
               {isPlaying ? (
                 <svg
@@ -120,7 +201,15 @@ function VideoCard({ src, title, description }: VideoCardProps) {
               )}
             </div>
           </div>
-        )}
+
+          {/* Progress Bar */}
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-black bg-opacity-30">
+            <div
+              className="h-full bg-white transition-all duration-300"
+              style={{ width: `${progress}%` }}
+            ></div>
+          </div>
+        </div>
       </div>
 
       <div className="text-center">
