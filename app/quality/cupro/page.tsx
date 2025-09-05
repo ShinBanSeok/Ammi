@@ -2,7 +2,7 @@
 
 import Container from '@/components/Container';
 import SubPageSidebar from '@/components/SubPageSidebar';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface VideoCardProps {
   src: string;
@@ -13,6 +13,8 @@ interface VideoCardProps {
 function VideoCard({ src, title, description }: VideoCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isVisible, setIsVisible] = useState(1);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const handlePlayPause = (videoElement: HTMLVideoElement) => {
     if (videoElement.paused) {
@@ -24,10 +26,50 @@ function VideoCard({ src, title, description }: VideoCardProps) {
     }
   };
 
+  useEffect(() => {
+    const card = cardRef.current;
+    if (!card) return;
+
+    const handleScroll = () => {
+      const scrollContainer = card.closest('.overflow-x-auto');
+      if (!scrollContainer) return;
+
+      const containerRect = scrollContainer.getBoundingClientRect();
+      const cardRect = card.getBoundingClientRect();
+
+      // 카드의 중앙점이 컨테이너 중앙에서 얼마나 떨어져 있는지 계산
+      const containerCenter = containerRect.left + containerRect.width / 2;
+      const cardCenter = cardRect.left + cardRect.width / 2;
+      const distanceFromCenter = Math.abs(containerCenter - cardCenter);
+      const maxDistance = containerRect.width / 2;
+
+      // 거리에 따른 opacity와 scale 계산 (중앙에 가까울수록 1에 가까워짐)
+      const normalizedDistance = Math.min(distanceFromCenter / maxDistance, 1);
+      const opacity = Math.max(0.4, 1 - normalizedDistance * 0.6);
+      const scale = Math.max(0.85, 1 - normalizedDistance * 0.15);
+
+      setIsVisible(opacity);
+      card.style.transform = `scale(${scale})`;
+      card.style.opacity = `${opacity}`;
+    };
+
+    const scrollContainer = card.closest('.overflow-x-auto');
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', handleScroll);
+      handleScroll(); // 초기 상태 설정
+
+      return () => scrollContainer.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
+
   return (
-    <div className="flex flex-col items-center">
+    <div
+      ref={cardRef}
+      className="flex flex-col items-center flex-shrink-0 w-[250px] md:w-auto transition-all duration-500 ease-out"
+      style={{ scrollSnapAlign: 'center' }}
+    >
       <div
-        className="relative w-full max-w-sm rounded-lg overflow-hidden shadow-md mb-4 cursor-pointer"
+        className="relative w-full md:max-w-sm rounded-lg overflow-hidden shadow-lg mb-4 cursor-pointer transition-all duration-500 hover:shadow-xl"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onClick={(e) => {
@@ -103,7 +145,40 @@ export default function CuproPage() {
             CUPRO
           </h1>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-20 mt-8">
+          {/* Mobile: Premium carousel with side previews */}
+          <div className="md:hidden mt-8 -mx-4">
+            <div
+              className="overflow-x-auto scrollbar-hide w-screen"
+              style={{ scrollSnapType: 'x mandatory' }}
+            >
+              <div className="flex gap-6">
+                {/* 왼쪽 여백 */}
+                <div className="w-12 flex-shrink-0"></div>
+
+                <VideoCard
+                  src="/video/ak3000.mp4"
+                  title="AK3000"
+                  description={['CUPRO 100', '48인치']}
+                />
+                <VideoCard
+                  src="/video/ak2000.mp4"
+                  title="AK2000"
+                  description={['CUPRO 100', '48인치']}
+                />
+                <VideoCard
+                  src="/video/ak1000.mp4"
+                  title="AK1000"
+                  description={['CUPRO 100', '48인치']}
+                />
+
+                {/* 오른쪽 여백 */}
+                <div className="w-32 flex-shrink-0"></div>
+              </div>
+            </div>
+          </div>
+
+          {/* Desktop: Grid layout */}
+          <div className="hidden md:grid md:grid-cols-3 gap-20 mt-8">
             <VideoCard
               src="/video/ak3000.mp4"
               title="AK3000"
