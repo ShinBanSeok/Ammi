@@ -188,22 +188,15 @@ function VideoCard({ src, title, description }: VideoCardProps) {
         >
           {/* Play/Pause Button */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-16 h-16 bg-white bg-opacity-90 rounded-full flex items-center justify-center hover:bg-opacity-100 transition-all duration-200">
+            <div className="w-16 h-16 bg-black/40 rounded-full flex items-center justify-center hover:bg-black/60 transition-all duration-200">
               {isPlaying ? (
-                <svg
-                  className="w-8 h-8 text-gray-800"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
+                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <rect x="6" y="4" width="4" height="16" rx="1"/>
+                  <rect x="14" y="4" width="4" height="16" rx="1"/>
                 </svg>
               ) : (
-                <svg
-                  className="w-8 h-8 text-gray-800 ml-1"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M8 5v14l11-7z" />
+                <svg className="w-6 h-6 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="m7 4 13 8-13 8V4z"/>
                 </svg>
               )}
             </div>
