@@ -21,7 +21,12 @@ function VideoCard({ src, title, description }: VideoCardProps) {
 
   const handlePlayPause = (videoElement: HTMLVideoElement) => {
     if (videoElement.paused) {
-      videoElement.play();
+      videoElement.play().catch((error) => {
+        console.log('Video play failed:', error);
+        // 재생 실패 시 음소거 후 재시도
+        videoElement.muted = true;
+        videoElement.play();
+      });
       setIsPlaying(true);
       // 재생 시작하면 2초 후 컨트롤 숨기기
       if (hideTimeoutRef.current) {
@@ -137,15 +142,20 @@ function VideoCard({ src, title, description }: VideoCardProps) {
             'video'
           ) as HTMLVideoElement;
           if (video) {
+            // 모바일에서는 단순히 재생/정지만
             handlePlayPause(video);
-            // 모바일에서 터치 시 컨트롤 표시
-            setShowControls(true);
-            if (hideTimeoutRef.current) {
-              clearTimeout(hideTimeoutRef.current);
+            
+            // 데스크탑에서만 컨트롤 표시 로직 실행
+            const isMobile = window.innerWidth < 768;
+            if (!isMobile) {
+              setShowControls(true);
+              if (hideTimeoutRef.current) {
+                clearTimeout(hideTimeoutRef.current);
+              }
+              hideTimeoutRef.current = setTimeout(() => {
+                setShowControls(false);
+              }, 1000);
             }
-            hideTimeoutRef.current = setTimeout(() => {
-              setShowControls(false);
-            }, 1000);
           }
         }}
       >
@@ -177,9 +187,18 @@ function VideoCard({ src, title, description }: VideoCardProps) {
           Your browser does not support the video tag.
         </video>
 
-        {/* Custom Play Button Overlay - Always Present */}
+        {/* Mobile Only - Tap to Play Hint */}
+        <div className="md:hidden absolute inset-0 flex items-end justify-center pb-4 pointer-events-none">
+          <div className={`bg-black/60 backdrop-blur-sm px-3 py-1 rounded-full text-white text-xs transition-opacity duration-500 ${
+            !isPlaying ? 'opacity-70' : 'opacity-0'
+          }`}>
+            탭하여 재생
+          </div>
+        </div>
+
+        {/* Desktop Only - Custom Play Button Overlay */}
         <div
-          className={`absolute inset-0 bg-black bg-opacity-20 transition-opacity duration-300 ${
+          className={`hidden md:block absolute inset-0 bg-black bg-opacity-20 transition-opacity duration-300 ${
             showControls || !isPlaying ? 'opacity-100' : 'opacity-0'
           }`}
           style={{
