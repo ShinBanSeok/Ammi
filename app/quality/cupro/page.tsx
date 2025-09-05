@@ -137,9 +137,9 @@ function VideoCard({ src, title, description }: VideoCardProps) {
             'video'
           ) as HTMLVideoElement;
           
-          if (showControls && video) {
+          if (video) {
+            // 모바일에서는 항상 재생바 표시하고 재생/정지 토글
             handlePlayPause(video);
-          } else {
             setShowControls(true);
             if (hideTimeoutRef.current) {
               clearTimeout(hideTimeoutRef.current);
