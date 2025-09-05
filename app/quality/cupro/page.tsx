@@ -136,7 +136,17 @@ function VideoCard({ src, title, description }: VideoCardProps) {
           const video = e.currentTarget.querySelector(
             'video'
           ) as HTMLVideoElement;
-          if (video) handlePlayPause(video);
+          if (video) {
+            handlePlayPause(video);
+            // 모바일에서 터치 시 컨트롤 표시
+            setShowControls(true);
+            if (hideTimeoutRef.current) {
+              clearTimeout(hideTimeoutRef.current);
+            }
+            hideTimeoutRef.current = setTimeout(() => {
+              setShowControls(false);
+            }, 1000);
+          }
         }}
       >
         <video
