@@ -2,63 +2,126 @@
 
 import Container from '@/components/Container';
 import SubPageSidebar from '@/components/SubPageSidebar';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
-interface VideoCardProps {
+// 모바일 전용 비디오 카드
+function MobileVideoCard({
+  src,
+  title,
+  description,
+}: {
   src: string;
   title: string;
   description: string[];
-}
-
-function VideoCard({ src, title, description }: VideoCardProps) {
+}) {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [showControls, setShowControls] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const cardRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const hideTimeoutRef = useRef<NodeJS.Timeout>();
-  const lastMousePos = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
-  const clickTimeoutRef = useRef<NodeJS.Timeout>();
 
-  const handlePlayPause = (videoElement: HTMLVideoElement) => {
-    if (videoElement.paused) {
-      videoElement.play().catch(() => {
-        videoElement.muted = true;
-        videoElement.play();
+  const handleVideoClick = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (video.paused) {
+      video.play().catch(() => {
+        video.muted = true;
+        video.play();
       });
       setIsPlaying(true);
     } else {
-      videoElement.pause();
+      video.pause();
       setIsPlaying(false);
     }
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    const currentPos = { x: e.clientX, y: e.clientY };
-    const distance = Math.sqrt(
-      Math.pow(currentPos.x - lastMousePos.current.x, 2) +
-        Math.pow(currentPos.y - lastMousePos.current.y, 2)
-    );
+  return (
+    <div className="flex flex-col items-center flex-shrink-0 w-[250px] transition-all duration-500 ease-out">
+      <div
+        className="relative w-full rounded-lg overflow-hidden shadow-lg mb-4 cursor-pointer"
+        onClick={handleVideoClick}
+      >
+        <video
+          ref={videoRef}
+          className="w-full"
+          preload="metadata"
+          playsInline
+          muted
+          onPlay={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
+        >
+          <source src={src} type="video/mp4" />
+        </video>
 
-    if (distance > 5) {
-      setShowControls(true);
-      if (hideTimeoutRef.current) {
-        clearTimeout(hideTimeoutRef.current);
-      }
-      hideTimeoutRef.current = setTimeout(() => {
-        setShowControls(false);
-      }, 1000);
+        {/* 탭하여 재생 힌트 */}
+        {!isPlaying && (
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="bg-black/30 px-2 py-0.5 rounded text-white text-xs mt-24">
+              터치하여 재생
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="text-center">
+        <h3 className="text-lg font-bold mb-2">{title}</h3>
+        {description.map((desc, index) => (
+          <p key={index} className="text-gray-700">
+            {desc}
+          </p>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// 데스크탑 전용 비디오 카드
+function DesktopVideoCard({
+  src,
+  title,
+  description,
+}: {
+  src: string;
+  title: string;
+  description: string[];
+}) {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [showControls, setShowControls] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const hideTimeoutRef = useRef<NodeJS.Timeout>();
+
+  const handlePlayPause = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (video.paused) {
+      video.play().catch(() => {
+        video.muted = true;
+        video.play();
+      });
+      setIsPlaying(true);
+    } else {
+      video.pause();
+      setIsPlaying(false);
     }
-
-    lastMousePos.current = currentPos;
   };
 
-  const handleMouseEnter = (e: React.MouseEvent) => {
-    lastMousePos.current = { x: e.clientX, y: e.clientY };
+  const handleMouseEnter = () => {
     setShowControls(true);
     if (hideTimeoutRef.current) {
       clearTimeout(hideTimeoutRef.current);
     }
+    // 마우스가 올라가 있어도 1초 후 자동 숨김
+    hideTimeoutRef.current = setTimeout(() => {
+      setShowControls(false);
+    }, 1000);
+  };
+
+  const handleMouseMove = () => {
+    setShowControls(true);
+    if (hideTimeoutRef.current) {
+      clearTimeout(hideTimeoutRef.current);
+    }
+    // 마우스 움직일 때마다 타이머 재시작
     hideTimeoutRef.current = setTimeout(() => {
       setShowControls(false);
     }, 1000);
@@ -73,146 +136,42 @@ function VideoCard({ src, title, description }: VideoCardProps) {
 
   const handleTimeUpdate = () => {
     const video = videoRef.current;
-    if (video) {
+    if (video && video.duration) {
       setProgress((video.currentTime / video.duration) * 100);
     }
   };
 
-  useEffect(() => {
-    const card = cardRef.current;
-    if (!card) return;
-
-    const handleScroll = () => {
-      const scrollContainer = card.closest('.overflow-x-auto');
-      if (!scrollContainer) return;
-
-      const containerRect = scrollContainer.getBoundingClientRect();
-      const cardRect = card.getBoundingClientRect();
-
-      // 카드의 중앙점이 컨테이너 중앙에서 얼마나 떨어져 있는지 계산
-      const containerCenter = containerRect.left + containerRect.width / 2;
-      const cardCenter = cardRect.left + cardRect.width / 2;
-      const distanceFromCenter = Math.abs(containerCenter - cardCenter);
-      const maxDistance = containerRect.width / 2;
-
-      // 거리에 따른 opacity와 scale 계산 (중앙에 가까울수록 1에 가까워짐)
-      const normalizedDistance = Math.min(distanceFromCenter / maxDistance, 1);
-      const opacity = Math.max(0.4, 1 - normalizedDistance * 0.6);
-      const scale = Math.max(0.85, 1 - normalizedDistance * 0.15);
-
-      card.style.transform = `scale(${scale})`;
-      card.style.opacity = `${opacity}`;
-    };
-
-    const scrollContainer = card.closest('.overflow-x-auto');
-    if (scrollContainer) {
-      scrollContainer.addEventListener('scroll', handleScroll);
-      handleScroll(); // 초기 상태 설정
-
-      return () => scrollContainer.removeEventListener('scroll', handleScroll);
-    }
-  }, []);
-
   return (
-    <div
-      ref={cardRef}
-      className="flex flex-col items-center flex-shrink-0 w-[250px] md:w-auto transition-all duration-500 ease-out"
-      style={{ scrollSnapAlign: 'center' }}
-    >
+    <div className="flex flex-col items-center">
       <div
-        className="relative w-full md:max-w-sm rounded-lg overflow-hidden shadow-lg mb-4 cursor-pointer transition-all duration-500 hover:shadow-xl"
+        className="relative w-full max-w-sm rounded-lg overflow-hidden shadow-lg mb-4 cursor-pointer transition-all duration-300 hover:shadow-xl"
         onMouseEnter={handleMouseEnter}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          
-          // 디바운스: 200ms 내 중복 클릭 방지
-          if (clickTimeoutRef.current) return;
-          
-          // 모바일에서만 동작
-          const isMobile = window.innerWidth < 768;
-          if (isMobile) {
-            const video = e.currentTarget.querySelector(
-              'video'
-            ) as HTMLVideoElement;
-            if (video) {
-              handlePlayPause(video);
-              
-              clickTimeoutRef.current = setTimeout(() => {
-                clickTimeoutRef.current = undefined;
-              }, 200);
-            }
-          }
-        }}
+        onClick={handlePlayPause}
       >
         <video
           ref={videoRef}
           className="w-full"
-          preload="auto"
+          preload="metadata"
           playsInline
           muted
-          style={
-            {
-              backfaceVisibility: 'hidden',
-              transform: 'translateZ(0)',
-              objectFit: 'contain',
-            } as React.CSSProperties
-          }
           onPlay={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
           onTimeUpdate={handleTimeUpdate}
-          onCanPlay={() => {
-            // 재생 가능할 때 첫 프레임 강제 표시
-            const video = videoRef.current;
-            if (video && video.readyState >= 2) {
-              video.currentTime = 0;
-            }
-          }}
         >
           <source src={src} type="video/mp4" />
-          Your browser does not support the video tag.
         </video>
 
-        {/* Mobile Only - Tap to Play Hint */}
-        <div className="md:hidden absolute inset-0 flex items-end justify-center  pointer-events-none">
-          <div
-            className={`bg-black/60 backdrop-blur-sm px-3 py-1 rounded-full text-white text-xs transition-opacity duration-500 ${
-              !isPlaying ? 'opacity-70' : 'opacity-0'
-            }`}
-          >
-            탭하여 재생
-          </div>
-        </div>
-
-        {/* Desktop Only - Custom Play Button Overlay */}
+        {/* 컨트롤 오버레이 */}
         <div
-          className={`hidden md:block absolute inset-0 bg-black bg-opacity-20 transition-opacity duration-300 ${
+          className={`absolute inset-0 bg-black bg-opacity-20 transition-opacity duration-300 ${
             showControls || !isPlaying ? 'opacity-100' : 'opacity-0'
           }`}
-          style={{
-            pointerEvents: showControls || !isPlaying ? 'auto' : 'none',
-          }}
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            if (clickTimeoutRef.current) return;
-            
-            const video = videoRef.current;
-            if (video) {
-              handlePlayPause(video);
-              
-              clickTimeoutRef.current = setTimeout(() => {
-                clickTimeoutRef.current = undefined;
-              }, 200);
-            }
-          }}
         >
-          {/* Play/Pause Button */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-16 h-16 bg-black/40 rounded-full flex items-center justify-center hover:bg-black/60 transition-all duration-200 pointer-events-none">
+          {/* 재생 버튼 */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-16 h-16 bg-black/40 rounded-full flex items-center justify-center hover:bg-black/60 transition-all duration-200">
               {isPlaying ? (
                 <svg
                   className="w-6 h-6 text-white"
@@ -234,12 +193,12 @@ function VideoCard({ src, title, description }: VideoCardProps) {
             </div>
           </div>
 
-          {/* Progress Bar */}
+          {/* 진행률 바 */}
           <div className="absolute bottom-0 left-0 right-0 h-1 bg-black bg-opacity-30">
             <div
               className="h-full bg-white transition-all duration-300"
               style={{ width: `${progress}%` }}
-            ></div>
+            />
           </div>
         </div>
       </div>
@@ -256,6 +215,57 @@ function VideoCard({ src, title, description }: VideoCardProps) {
   );
 }
 
+// 스크롤 애니메이션을 위한 모바일 카드 래퍼
+function MobileVideoCardWithScroll({
+  src,
+  title,
+  description,
+}: {
+  src: string;
+  title: string;
+  description: string[];
+}) {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const card = cardRef.current;
+    if (!card) return;
+
+    const handleScroll = () => {
+      const scrollContainer = card.closest('.overflow-x-auto');
+      if (!scrollContainer) return;
+
+      const containerRect = scrollContainer.getBoundingClientRect();
+      const cardRect = card.getBoundingClientRect();
+
+      const containerCenter = containerRect.left + containerRect.width / 2;
+      const cardCenter = cardRect.left + cardRect.width / 2;
+      const distanceFromCenter = Math.abs(containerCenter - cardCenter);
+      const maxDistance = containerRect.width / 2;
+
+      const normalizedDistance = Math.min(distanceFromCenter / maxDistance, 1);
+      const opacity = Math.max(0.4, 1 - normalizedDistance * 0.6);
+      const scale = Math.max(0.85, 1 - normalizedDistance * 0.15);
+
+      card.style.transform = `scale(${scale})`;
+      card.style.opacity = `${opacity}`;
+    };
+
+    const scrollContainer = card.closest('.overflow-x-auto');
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', handleScroll);
+      handleScroll();
+      return () => scrollContainer.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
+
+  return (
+    <div ref={cardRef} style={{ scrollSnapAlign: 'center' }}>
+      <MobileVideoCard src={src} title={title} description={description} />
+    </div>
+  );
+}
+
 export default function CuproPage() {
   return (
     <Container>
@@ -266,51 +276,47 @@ export default function CuproPage() {
             CUPRO
           </h1>
 
-          {/* Mobile: Premium carousel with side previews */}
+          {/* 모바일: 가로 스크롤 캐러셀 */}
           <div className="md:hidden mt-8 -mx-4">
             <div
               className="overflow-x-auto scrollbar-hide w-screen"
               style={{ scrollSnapType: 'x mandatory' }}
             >
               <div className="flex gap-6">
-                {/* 왼쪽 여백 */}
-                <div className="w-12 flex-shrink-0"></div>
-
-                <VideoCard
+                <div className="w-12 flex-shrink-0" />
+                <MobileVideoCardWithScroll
                   src="/video/ak3000.mp4"
                   title="AK3000"
                   description={['CUPRO 100', '48인치']}
                 />
-                <VideoCard
+                <MobileVideoCardWithScroll
                   src="/video/ak2000.mp4"
                   title="AK2000"
                   description={['CUPRO 100', '48인치']}
                 />
-                <VideoCard
+                <MobileVideoCardWithScroll
                   src="/video/ak1000.mp4"
                   title="AK1000"
                   description={['CUPRO 100', '48인치']}
                 />
-
-                {/* 오른쪽 여백 */}
-                <div className="w-32 flex-shrink-0"></div>
+                <div className="w-32 flex-shrink-0" />
               </div>
             </div>
           </div>
 
-          {/* Desktop: Grid layout */}
+          {/* 데스크탑: 3컬럼 그리드 */}
           <div className="hidden md:grid md:grid-cols-3 gap-20 mt-8">
-            <VideoCard
+            <DesktopVideoCard
               src="/video/ak3000.mp4"
               title="AK3000"
               description={['CUPRO 100', '48인치']}
             />
-            <VideoCard
+            <DesktopVideoCard
               src="/video/ak2000.mp4"
               title="AK2000"
               description={['CUPRO 100', '48인치']}
             />
-            <VideoCard
+            <DesktopVideoCard
               src="/video/ak1000.mp4"
               title="AK1000"
               description={['CUPRO 100', '48인치']}
